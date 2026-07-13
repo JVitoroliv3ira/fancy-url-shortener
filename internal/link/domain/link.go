@@ -3,7 +3,6 @@ package domain
 import (
 	"errors"
 	"github.com/google/uuid"
-	"net/url"
 	"time"
 )
 
