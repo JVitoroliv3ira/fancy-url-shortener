@@ -37,26 +37,12 @@ func NewLink(id LinkID, code string, targetURL string, now time.Time) (Link, err
 		return Link{}, errors.New("code is required")
 	}
 
-	if targetURL == "" {
-		return Link{}, errors.New("targetURL is required")
-	}
-
 	if now.IsZero() {
 		return Link{}, errors.New("now is required")
 	}
 
-	parsed, err := url.ParseRequestURI(targetURL)
-
-	if err != nil {
-		return Link{}, errors.New("targetURL is invalid")
-	}
-
-	if parsed.Scheme != "http" && parsed.Scheme != "https" {
-		return Link{}, errors.New("targetURL must use http or https")
-	}
-
-	if parsed.Host == "" {
-		return Link{}, errors.New("targetURL host is required")
+	if err := validateTargetURL(targetURL); err != nil {
+		return Link{}, err
 	}
 
 	return Link{
@@ -67,4 +53,42 @@ func NewLink(id LinkID, code string, targetURL string, now time.Time) (Link, err
 		CreatedAt: now,
 		ExpiresAt: now.Add(DefaultLinkTTL),
 	}, nil
+}
+
+func (l Link) IsActive() bool {
+	return l.Status == LinkStatusActive
+}
+
+func (l Link) IsExpired(now time.Time) bool {
+	return !now.Before(l.ExpiresAt)
+}
+
+func (l Link) IsAvailable(now time.Time) bool {
+	return l.IsActive() && !l.IsExpired(now)
+}
+
+func (l *Link) Activate(now time.Time) error {
+	if l.IsActive() {
+		return errors.New("link is already active")
+	}
+
+	if l.IsExpired(now) {
+		return errors.New("link is expired")
+	}
+
+	l.Status = LinkStatusActive
+	return nil
+}
+
+func (l *Link) Deactivate(now time.Time) error {
+	if !l.IsActive() {
+		return errors.New("link is already inactive")
+	}
+
+	if l.IsExpired(now) {
+		return errors.New("link is expired")
+	}
+
+	l.Status = LinkStatusInactive
+	return nil
 }
