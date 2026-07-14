@@ -90,3 +90,133 @@ func TestNewLinkValidation(t *testing.T) {
 		})
 	}
 }
+
+func TestActivateValidation(t *testing.T) {
+	now := time.Date(2026, 7, 13, 12, 0, 0, 0, time.UTC)
+
+	tests := []struct {
+		name       string
+		status     LinkStatus
+		now        time.Time
+		expiresAt  time.Time
+		wantErr    string
+		wantStatus LinkStatus
+	}{
+		{
+			name:       "rejects already active link",
+			status:     LinkStatusActive,
+			now:        now,
+			expiresAt:  now.Add(time.Hour),
+			wantErr:    "link is already active",
+			wantStatus: LinkStatusActive,
+		},
+		{
+			name:       "rejects expired link",
+			status:     LinkStatusActive,
+			now:        now,
+			expiresAt:  now.Add(-time.Hour),
+			wantErr:    "link is expired",
+			wantStatus: LinkStatusActive,
+		},
+		{
+			name:       "activates inactive link",
+			status:     LinkStatusInactive,
+			now:        now,
+			expiresAt:  now.Add(time.Hour),
+			wantErr:    "",
+			wantStatus: LinkStatusActive,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			link := Link{
+				Status:    tt.status,
+				ExpiresAt: tt.expiresAt,
+			}
+
+			err := link.Activate(tt.now)
+
+			if tt.wantErr != "" {
+				if err == nil {
+					t.Fatalf("expected error %q, got nil", tt.wantErr)
+				}
+
+				if err.Error() != tt.wantErr {
+					t.Fatalf("expected error %q, got %q", tt.wantErr, err.Error())
+				}
+			} else if err != nil {
+				t.Fatalf("expected nil error, got %q", err.Error())
+			}
+
+			if link.Status != tt.wantStatus {
+				t.Fatalf("expected status %q, got %q", tt.wantStatus, link.Status)
+			}
+		})
+	}
+}
+
+func TestDeactivateValidation(t *testing.T) {
+	now := time.Date(2026, 7, 13, 12, 0, 0, 0, time.UTC)
+
+	tests := []struct {
+		name       string
+		status     LinkStatus
+		now        time.Time
+		expiresAt  time.Time
+		wantErr    string
+		wantStatus LinkStatus
+	}{
+		{
+			name:       "rejects already inactive link",
+			status:     LinkStatusInactive,
+			now:        now,
+			expiresAt:  now.Add(time.Hour),
+			wantErr:    "link is already inactive",
+			wantStatus: LinkStatusInactive,
+		},
+		{
+			name:       "rejects expired link",
+			status:     LinkStatusInactive,
+			now:        now,
+			expiresAt:  now.Add(-time.Hour),
+			wantErr:    "link is expired",
+			wantStatus: LinkStatusInactive,
+		},
+		{
+			name:       "Deactivates active link",
+			status:     LinkStatusActive,
+			now:        now,
+			expiresAt:  now.Add(time.Hour),
+			wantErr:    "",
+			wantStatus: LinkStatusInactive,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			link := Link{
+				Status:    tt.status,
+				ExpiresAt: tt.expiresAt,
+			}
+
+			err := link.Deactivate(tt.now)
+
+			if tt.wantErr != "" {
+				if err == nil {
+					t.Fatalf("expected error %q, got nil", tt.wantErr)
+				}
+
+				if err.Error() != tt.wantErr {
+					t.Fatalf("expected error %q, got %q", tt.wantErr, err.Error())
+				}
+			} else if err != nil {
+				t.Fatalf("expected nil error, got %q", err.Error())
+			}
+
+			if link.Status != tt.wantStatus {
+				t.Fatalf("expected status %q, got %q", tt.wantStatus, link.Status)
+			}
+		})
+	}
+}
