@@ -67,12 +67,12 @@ func (l Link) IsAvailable(now time.Time) bool {
 }
 
 func (l *Link) Activate(now time.Time) error {
-	if l.IsActive() {
-		return errors.New("link is already active")
-	}
-
 	if l.IsExpired(now) {
 		return errors.New("link is expired")
+	}
+
+	if l.IsActive() {
+		return errors.New("link is already active")
 	}
 
 	l.Status = LinkStatusActive
@@ -80,12 +80,12 @@ func (l *Link) Activate(now time.Time) error {
 }
 
 func (l *Link) Deactivate(now time.Time) error {
-	if !l.IsActive() {
-		return errors.New("link is already inactive")
-	}
-
 	if l.IsExpired(now) {
 		return errors.New("link is expired")
+	}
+
+	if !l.IsActive() {
+		return errors.New("link is already inactive")
 	}
 
 	l.Status = LinkStatusInactive
