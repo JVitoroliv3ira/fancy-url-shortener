@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-func TestValidateTargetURL(t *testing.T) {
+func TestValidateTargetURLValidatesInput(t *testing.T) {
 	tests := []struct {
 		name      string
 		targetURL string
