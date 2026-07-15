@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func TestNewLinkValidation(t *testing.T) {
+func TestNewLinkValidatesInput(t *testing.T) {
 	now := time.Date(2026, 7, 13, 12, 0, 0, 0, time.UTC)
 	validID := LinkID(uuid.New())
 
@@ -91,7 +91,7 @@ func TestNewLinkValidation(t *testing.T) {
 	}
 }
 
-func TestActivateValidation(t *testing.T) {
+func TestLinkActivateValidatesStatus(t *testing.T) {
 	now := time.Date(2026, 7, 13, 12, 0, 0, 0, time.UTC)
 
 	tests := []struct {
@@ -156,7 +156,7 @@ func TestActivateValidation(t *testing.T) {
 	}
 }
 
-func TestDeactivateValidation(t *testing.T) {
+func TestLinkDeactivateValidatesStatus(t *testing.T) {
 	now := time.Date(2026, 7, 13, 12, 0, 0, 0, time.UTC)
 
 	tests := []struct {
@@ -184,7 +184,7 @@ func TestDeactivateValidation(t *testing.T) {
 			wantStatus: LinkStatusInactive,
 		},
 		{
-			name:       "Deactivates active link",
+			name:       "deactivates active link",
 			status:     LinkStatusActive,
 			now:        now,
 			expiresAt:  now.Add(time.Hour),
