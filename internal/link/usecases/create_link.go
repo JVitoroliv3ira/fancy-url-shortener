@@ -2,10 +2,9 @@ package usecases
 
 import (
 	"context"
-	"time"
-
 	"github.com/JVitoroliv3ira/fancy-url-shortener/internal/link/domain"
 	"github.com/JVitoroliv3ira/fancy-url-shortener/internal/link/ports"
+	"time"
 )
 
 type Clock interface {
@@ -27,6 +26,20 @@ type CreateLink struct {
 	codeGenerator ports.CodeGenerator
 	idGenerator   ports.IDGenerator
 	clock         Clock
+}
+
+func NewCreateLink(
+	repository ports.LinkRepository,
+	codeGenerator ports.CodeGenerator,
+	idGenerator ports.IDGenerator,
+	clock Clock,
+) CreateLink {
+	return CreateLink{
+		repository:    repository,
+		codeGenerator: codeGenerator,
+		idGenerator:   idGenerator,
+		clock:         clock,
+	}
 }
 
 func (uc CreateLink) Execute(ctx context.Context, input CreateLinkInput) (CreateLinkOutput, error) {
