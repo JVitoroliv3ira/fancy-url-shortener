@@ -1,4 +1,4 @@
-name: tests
+name: Golang test suite
 
 on:
   push:
@@ -7,17 +7,18 @@ on:
 
 jobs:
   test:
+    name: Test golang application
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Go
+      - name: Set up Go
         uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
           cache: true
 
-      - name: Run tests
+      - name: Run test suite
         run: go test -v ./...
