@@ -32,7 +32,7 @@ public class ShortUrl {
     }
 
     if (expiresAt == null) {
-      throw new IllegalArgumentException("Expired at is required");
+      throw new IllegalArgumentException("Expires at is required");
     }
 
     if (!expiresAt.isAfter(createdAt)) {
