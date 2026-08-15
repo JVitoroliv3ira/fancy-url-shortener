@@ -49,4 +49,20 @@ public class ShortUrl {
   public boolean isRedirectableAt(Instant now) {
     return !isExpired(now);
   }
+
+  public ShortCode shortCode() {
+    return shortCode;
+  }
+
+  public OriginalUrl originalUrl() {
+    return originalUrl;
+  }
+
+  public Instant createdAt() {
+    return createdAt;
+  }
+
+  public Instant expiresAt() {
+    return expiresAt;
+  }
 }
