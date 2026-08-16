@@ -6,7 +6,7 @@ public record OriginalUrl(String value) {
   public OriginalUrl {
     if (value == null || value.isBlank()) {
       throw new IllegalArgumentException("Original URL is required");
-    } 
+    }
 
     URI uri = URI.create(value);
     String scheme = uri.getScheme();
@@ -15,7 +15,7 @@ public record OriginalUrl(String value) {
       throw new IllegalArgumentException("URL scheme is required");
     }
 
-    if (!scheme.equals("http") || !scheme.equals("https")) {
+    if (!scheme.equals("http") && !scheme.equals("https")) {
       throw new IllegalArgumentException("Only HTTP and HTTPS URLs are allowed");
     }
 
