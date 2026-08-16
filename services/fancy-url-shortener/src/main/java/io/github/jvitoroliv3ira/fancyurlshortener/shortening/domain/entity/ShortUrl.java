@@ -43,7 +43,7 @@ public class ShortUrl {
   }
 
   public boolean isExpired(Instant now) {
-    return expiresAt != null && !expiresAt.isAfter(now);
+    return !expiresAt.isAfter(now);
   }
 
   public boolean isRedirectableAt(Instant now) {
