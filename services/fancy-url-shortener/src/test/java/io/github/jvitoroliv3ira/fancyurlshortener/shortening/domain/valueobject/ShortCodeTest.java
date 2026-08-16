@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.junit.jupiter.params.provider.ValueSources;
 
 public class ShortCodeTest {
   @Test
@@ -31,6 +30,15 @@ public class ShortCodeTest {
   @Test
   void shouldRejectBlankShortCode() {
     String payload = "      ";
+
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new ShortCode(payload));
+
+    assertThat(exception.getMessage()).isEqualTo("Short code is required");
+  }
+
+  @Test
+  void shouldRejectEmptyShortCode() {
+    String payload = "";
 
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new ShortCode(payload));
 
@@ -64,12 +72,40 @@ public class ShortCodeTest {
     assertThat(exception.getMessage()).isEqualTo("Short code contains invalid characters");
   }
 
+  @ParameterizedTest
+  @ValueSource(strings = { "abc12!", "abc 12", "abc/12", "abc.12" })
+  void shouldRejectMultipleInvalidCharacters(String payload) {
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new ShortCode(payload));
+
+    assertThat(exception.getMessage()).isEqualTo("Short code contains invalid characters");
+  }
+
+  @Test
   void shouldRejectReservedWord() {
     String payload = "health";
 
     IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new ShortCode(payload));
 
     assertThat(exception.getMessage()).isEqualTo("Short code is reserved");
+  }
+
+  @Test
+  void shouldRejectReservedWordIgnoringCase() {
+    String payload = "Health";
+
+    IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> new ShortCode(payload));
+
+    assertThat(exception.getMessage()).isEqualTo("Short code is reserved");
+  }
+
+  @Test
+  void shouldTrimShortCode() {
+    String expected = "abc123";
+    String payload = " abc123 ";
+
+    ShortCode result = new ShortCode(payload);
+
+    assertThat(result.value()).isEqualTo(expected);
   }
 
   @ParameterizedTest
