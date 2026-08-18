@@ -9,11 +9,20 @@ import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.valueobject.
 
 @Component
 public class SecureRandomShortCodeGenerator implements ShortCodeGenerator {
-  private static final Integer CODE_LENGTH = 6;
+  private static final int CODE_LENGTH = 6;
   private static final char[] B62_ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
       .toCharArray();
-  private static final SecureRandom random = new SecureRandom();
+  private final SecureRandom random;
 
+  public SecureRandomShortCodeGenerator() {
+    this(new SecureRandom());
+  }
+
+  SecureRandomShortCodeGenerator(SecureRandom random) {
+    this.random = random;
+  }
+
+  @Override
   public ShortCode generate() {
     StringBuilder code = new StringBuilder(CODE_LENGTH);
 
