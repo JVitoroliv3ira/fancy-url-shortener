@@ -1,3 +1,8 @@
 spring:
   application:
     name: fancy-url-shortener
+  cassandra:
+    keyspace-name: fancy_url_shortener
+    contact-points: localhost
+    port: 9042
+    local-datacenter: datacenter1
