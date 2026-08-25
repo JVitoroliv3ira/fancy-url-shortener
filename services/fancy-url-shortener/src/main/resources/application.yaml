@@ -1,6 +1,7 @@
 spring:
   application:
     name: fancy-url-shortener
+    redirect-base-url: "http://localhost:8000/"
   cassandra:
     keyspace-name: fancy_url_shortener
     contact-points: localhost

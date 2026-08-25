@@ -1,5 +1,6 @@
 package io.github.jvitoroliv3ira.fancyurlshortener.shortening.infrastructure.web;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,8 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/v1/urls")
 public class CreateShortUrlController {
   private final CreateShortUrlHandler handler;
+  @Value("${spring.application.redirect-base-url}")
+  private String redirectBaseUrl;
 
   public CreateShortUrlController(CreateShortUrlHandler handler) {
     this.handler = handler;
@@ -28,7 +31,7 @@ public class CreateShortUrlController {
     CreateShortUrlResult result = handler.handle(command);
 
     CreateShortUrlResponse response = new CreateShortUrlResponse(result.code(),
-        "http://localhost:8000/" + result.code(),
+        redirectBaseUrl + result.code(),
         result.originalUrl(), result.expiresAt());
 
     return ResponseEntity.status(HttpStatus.CREATED).body(response);
