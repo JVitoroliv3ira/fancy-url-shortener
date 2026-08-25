@@ -1,4 +1,4 @@
-package io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.valueobject;
+package io.github.jvitoroliv3ira.fancyurlshortener.shared.domain.valueobject;
 
 import java.util.Set;
 import java.util.regex.Pattern;

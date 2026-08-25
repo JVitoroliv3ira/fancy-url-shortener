@@ -1,4 +1,4 @@
-package io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.valueobject;
+package io.github.jvitoroliv3ira.fancyurlshortener.shared.domain.valueobject;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;

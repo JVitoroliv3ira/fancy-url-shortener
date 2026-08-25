@@ -8,7 +8,7 @@ import java.time.Instant;
 import org.junit.jupiter.api.Test;
 
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.valueobject.OriginalUrl;
-import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.valueobject.ShortCode;
+import io.github.jvitoroliv3ira.fancyurlshortener.shared.domain.valueobject.ShortCode;
 
 public class ShortUrlTest {
   private final ShortCode shortCode = new ShortCode("abc123");

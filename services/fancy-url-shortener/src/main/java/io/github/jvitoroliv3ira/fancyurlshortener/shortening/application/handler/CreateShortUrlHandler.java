@@ -12,7 +12,7 @@ import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.entity.Short
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.repository.ShortUrlRepository;
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.service.ShortCodeGenerator;
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.valueobject.OriginalUrl;
-import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.valueobject.ShortCode;
+import io.github.jvitoroliv3ira.fancyurlshortener.shared.domain.valueobject.ShortCode;
 
 @Service
 public class CreateShortUrlHandler {

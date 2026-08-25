@@ -7,7 +7,7 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 
-import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.valueobject.ShortCode;
+import io.github.jvitoroliv3ira.fancyurlshortener.shared.domain.valueobject.ShortCode;
 
 public class SecureRandomShortCodeGeneratorTest {
   @Test

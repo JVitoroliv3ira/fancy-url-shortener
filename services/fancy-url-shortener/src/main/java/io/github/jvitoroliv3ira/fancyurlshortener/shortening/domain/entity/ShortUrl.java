@@ -3,7 +3,7 @@ package io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.entity;
 import java.time.Instant;
 
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.valueobject.OriginalUrl;
-import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.valueobject.ShortCode;
+import io.github.jvitoroliv3ira.fancyurlshortener.shared.domain.valueobject.ShortCode;
 
 public class ShortUrl {
   private final ShortCode shortCode;

@@ -23,7 +23,7 @@ import io.github.jvitoroliv3ira.fancyurlshortener.shortening.application.result.
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.entity.ShortUrl;
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.repository.ShortUrlRepository;
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.service.ShortCodeGenerator;
-import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.valueobject.ShortCode;
+import io.github.jvitoroliv3ira.fancyurlshortener.shared.domain.valueobject.ShortCode;
 
 public class CreateShortUrlHandlerTest {
   private static final Instant NOW = Instant.parse("2026-08-18T10:00:00Z");

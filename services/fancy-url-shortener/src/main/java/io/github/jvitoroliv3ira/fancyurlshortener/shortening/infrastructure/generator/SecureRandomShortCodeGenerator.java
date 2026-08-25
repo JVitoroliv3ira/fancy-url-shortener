@@ -5,7 +5,7 @@ import java.security.SecureRandom;
 import org.springframework.stereotype.Component;
 
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.service.ShortCodeGenerator;
-import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.valueobject.ShortCode;
+import io.github.jvitoroliv3ira.fancyurlshortener.shared.domain.valueobject.ShortCode;
 
 @Component
 public class SecureRandomShortCodeGenerator implements ShortCodeGenerator {
