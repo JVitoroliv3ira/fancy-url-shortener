@@ -42,14 +42,6 @@ public class ShortUrl {
     return new ShortUrl(shortCode, originalUrl, createdAt, expiresAt);
   }
 
-  public boolean isExpired(Instant now) {
-    return !expiresAt.isAfter(now);
-  }
-
-  public boolean isRedirectableAt(Instant now) {
-    return !isExpired(now);
-  }
-
   public ShortCode shortCode() {
     return shortCode;
   }
