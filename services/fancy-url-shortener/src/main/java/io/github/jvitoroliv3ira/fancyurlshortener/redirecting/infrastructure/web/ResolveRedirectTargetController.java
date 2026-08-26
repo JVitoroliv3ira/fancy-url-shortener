@@ -24,7 +24,7 @@ public class ResolveRedirectTargetController {
   }
 
   @GetMapping("/{code}")
-  public ResponseEntity<ResolveRedirectTargetResponse> redirect(@PathVariable String code) {
+  public ResponseEntity<Void> redirect(@PathVariable String code) {
     ResolveRedirectTargetCommand command = new ResolveRedirectTargetCommand(new ShortCode(code));
 
     ResolveRedirectTargetResult result = handler.handle(command);
