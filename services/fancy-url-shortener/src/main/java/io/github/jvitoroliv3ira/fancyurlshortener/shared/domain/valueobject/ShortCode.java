@@ -1,5 +1,6 @@
 package io.github.jvitoroliv3ira.fancyurlshortener.shared.domain.valueobject;
 
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -35,6 +36,6 @@ public record ShortCode(String value) {
   }
 
   private static boolean isReserved(String value) {
-    return RESERVED_WORDS.contains(value.toLowerCase());
+    return RESERVED_WORDS.contains(value.toLowerCase(Locale.ROOT));
   }
 }
