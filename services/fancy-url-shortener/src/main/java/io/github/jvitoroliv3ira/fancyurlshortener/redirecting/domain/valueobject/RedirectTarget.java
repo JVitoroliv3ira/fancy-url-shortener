@@ -7,9 +7,17 @@ public record RedirectTarget(String url, Instant expiresAt) {
     if (url == null || url.isBlank()) {
       throw new IllegalArgumentException("Url is required");
     }
+
+    if (expiresAt == null) {
+      throw new IllegalArgumentException("Expires at is required");
+    }
   }
 
   public boolean isExpired(Instant now) {
+    if (now == null) {
+      throw new IllegalArgumentException("Current instant is required");
+    }
+
     return !expiresAt.isAfter(now);
   }
 
