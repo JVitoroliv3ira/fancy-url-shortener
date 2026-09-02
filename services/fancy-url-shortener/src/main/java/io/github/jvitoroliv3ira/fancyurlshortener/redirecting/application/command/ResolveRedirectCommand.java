@@ -2,5 +2,5 @@ package io.github.jvitoroliv3ira.fancyurlshortener.redirecting.application.comma
 
 import io.github.jvitoroliv3ira.fancyurlshortener.shared.domain.valueobject.ShortCode;
 
-public record ResolveRedirectTargetCommand(ShortCode shortCode) {
+public record ResolveRedirectCommand(ShortCode shortCode) {
 }
