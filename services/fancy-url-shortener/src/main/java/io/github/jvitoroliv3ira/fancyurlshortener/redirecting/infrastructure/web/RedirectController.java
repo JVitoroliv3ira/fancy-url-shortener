@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.github.jvitoroliv3ira.fancyurlshortener.redirecting.application.command.ResolveRedirectCommand;
 import io.github.jvitoroliv3ira.fancyurlshortener.redirecting.application.handler.ResolveRedirectHandler;
-import io.github.jvitoroliv3ira.fancyurlshortener.redirecting.application.result.ResolveRedirectTargetResult;
+import io.github.jvitoroliv3ira.fancyurlshortener.redirecting.application.result.ResolveRedirectResult;
 import io.github.jvitoroliv3ira.fancyurlshortener.shared.domain.valueobject.ShortCode;
 
 @RestController
@@ -27,7 +27,7 @@ public class RedirectController {
   public ResponseEntity<Void> redirect(@PathVariable String code) {
     ResolveRedirectCommand command = new ResolveRedirectCommand(new ShortCode(code));
 
-    ResolveRedirectTargetResult result = handler.handle(command);
+    ResolveRedirectResult result = handler.handle(command);
 
     return ResponseEntity
         .status(HttpStatus.FOUND)

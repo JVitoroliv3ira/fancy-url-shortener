@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import io.github.jvitoroliv3ira.fancyurlshortener.redirecting.application.command.ResolveRedirectCommand;
 import io.github.jvitoroliv3ira.fancyurlshortener.redirecting.application.exception.RedirectTargetExpiredException;
 import io.github.jvitoroliv3ira.fancyurlshortener.redirecting.application.exception.RedirectTargetNotFoundException;
-import io.github.jvitoroliv3ira.fancyurlshortener.redirecting.application.result.ResolveRedirectTargetResult;
+import io.github.jvitoroliv3ira.fancyurlshortener.redirecting.application.result.ResolveRedirectResult;
 import io.github.jvitoroliv3ira.fancyurlshortener.redirecting.domain.repository.RedirectTargetLookup;
 import io.github.jvitoroliv3ira.fancyurlshortener.redirecting.domain.valueobject.RedirectTarget;
 
@@ -23,7 +23,7 @@ public class ResolveRedirectHandler {
     this.clock = clock;
   }
 
-  public ResolveRedirectTargetResult handle(ResolveRedirectCommand command) {
+  public ResolveRedirectResult handle(ResolveRedirectCommand command) {
     if (command == null) {
       throw new IllegalArgumentException("Command is required");
     }
@@ -42,6 +42,6 @@ public class ResolveRedirectHandler {
       throw new RedirectTargetExpiredException();
     }
 
-    return new ResolveRedirectTargetResult(redirectTarget.url());
+    return new ResolveRedirectResult(redirectTarget.url());
   }
 }
