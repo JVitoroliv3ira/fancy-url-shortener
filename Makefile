@@ -29,3 +29,10 @@ cassandra-migrate:
 
 .PHONY: cassandra-setup
 cassandra-setup: cassandra-up cassandra-migrate
+
+.PHONY: redis-up
+redis-up:
+	./scripts/start-redis.sh
+
+.PHONY: infra-up
+infra-up: cassandra-up redis-up
