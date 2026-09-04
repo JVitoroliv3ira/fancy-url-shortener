@@ -23,6 +23,7 @@ import io.github.jvitoroliv3ira.fancyurlshortener.shortening.application.result.
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.entity.ShortUrl;
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.repository.ShortUrlRepository;
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.service.ShortCodeGenerator;
+import io.github.jvitoroliv3ira.fancyurlshortener.shared.application.event.EventPublisher;
 import io.github.jvitoroliv3ira.fancyurlshortener.shared.domain.valueobject.ShortCode;
 
 public class CreateShortUrlHandlerTest {
@@ -33,13 +34,15 @@ public class CreateShortUrlHandlerTest {
 
   private ShortUrlRepository shortUrlRepository;
   private ShortCodeGenerator shortCodeGenerator;
+  private EventPublisher eventPublisher;
   private CreateShortUrlHandler handler;
 
   @BeforeEach
   void setUp() {
     shortUrlRepository = mock(ShortUrlRepository.class);
     shortCodeGenerator = mock(ShortCodeGenerator.class);
-    handler = new CreateShortUrlHandler(shortUrlRepository, shortCodeGenerator, CLOCK);
+    eventPublisher = mock(EventPublisher.class);
+    handler = new CreateShortUrlHandler(shortUrlRepository, shortCodeGenerator, eventPublisher, CLOCK);
   }
 
   @Test
