@@ -7,26 +7,33 @@ import java.time.Instant;
 import org.springframework.stereotype.Service;
 
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.application.command.CreateShortUrlCommand;
+import io.github.jvitoroliv3ira.fancyurlshortener.shortening.application.event.ShortUrlCreatedEvent;
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.application.result.CreateShortUrlResult;
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.entity.ShortUrl;
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.repository.ShortUrlRepository;
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.service.ShortCodeGenerator;
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.valueobject.OriginalUrl;
+import io.github.jvitoroliv3ira.fancyurlshortener.shared.application.event.EventPublisher;
 import io.github.jvitoroliv3ira.fancyurlshortener.shared.domain.valueobject.ShortCode;
 
 @Service
 public class CreateShortUrlHandler {
   private final ShortUrlRepository shortUrlRepository;
   private final ShortCodeGenerator shortCodeGenerator;
+  private final EventPublisher eventPublisher;
   private final Clock clock;
 
   private static final int MAX_GENERATION_ATTEMPTS = 5;
   private static final Duration DEFAULT_EXPIRATION = Duration.ofDays(7);
 
-  public CreateShortUrlHandler(ShortUrlRepository shortUrlRepository, ShortCodeGenerator shortCodeGenerator,
+  public CreateShortUrlHandler(
+      ShortUrlRepository shortUrlRepository,
+      ShortCodeGenerator shortCodeGenerator,
+      EventPublisher eventPublisher,
       Clock clock) {
     this.shortUrlRepository = shortUrlRepository;
     this.shortCodeGenerator = shortCodeGenerator;
+    this.eventPublisher = eventPublisher;
     this.clock = clock;
   }
 
@@ -44,6 +51,7 @@ public class CreateShortUrlHandler {
       ShortUrl shortUrl = ShortUrl.create(shortCode, originalUrl, createdAt, expiresAt);
 
       if (shortUrlRepository.saveIfAbsent(shortUrl)) {
+        eventPublisher.publish(new ShortUrlCreatedEvent(shortCode.value(), originalUrl.value(), createdAt, expiresAt));
         return new CreateShortUrlResult(
             shortUrl.shortCode().value(),
             shortUrl.originalUrl().value(),
