@@ -5,6 +5,11 @@ spring:
       port: 6379
   cache:
     type: redis
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   application:
     name: fancy-url-shortener
     redirect-base-url: "http://localhost:8080/r/"
