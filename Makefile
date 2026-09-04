@@ -34,5 +34,9 @@ cassandra-setup: cassandra-up cassandra-migrate
 redis-up:
 	./scripts/start-redis.sh
 
+.PHONY: kafka-up
+kafka-up:
+	./scripts/start-kafka.sh
+
 .PHONY: infra-up
-infra-up: cassandra-up redis-up
+infra-up: cassandra-setup redis-up kafka-up
