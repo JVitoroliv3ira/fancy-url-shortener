@@ -3,6 +3,7 @@ package io.github.jvitoroliv3ira.fancyurlshortener.redirecting.application.handl
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.Clock;
@@ -46,6 +47,7 @@ public class ResolveRedirectHandlerTest {
     ResolveRedirectResult result = handler.handle(payload);
 
     assertThat(result.url()).isEqualTo(TARGET_URL);
+    verify(redirectTargetLookup).findByShortCode(SHORT_CODE);
   }
 
   @Test
