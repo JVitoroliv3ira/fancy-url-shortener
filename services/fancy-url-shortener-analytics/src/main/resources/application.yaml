@@ -3,3 +3,16 @@ server:
 spring:
   application:
     name: fancy-url-shortener-analytics
+  kafka:
+      bootstrap-servers: localhost:9092
+      consumer:
+        group-id: fancy-url-shortener-analytics
+        auto-offset-reset: earliest
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
