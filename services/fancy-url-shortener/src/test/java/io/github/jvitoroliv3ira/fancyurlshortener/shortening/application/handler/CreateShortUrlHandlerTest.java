@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -19,6 +20,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.stubbing.OngoingStubbing;
 
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.application.command.CreateShortUrlCommand;
+import io.github.jvitoroliv3ira.fancyurlshortener.shortening.application.event.ShortUrlCreatedEvent;
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.application.result.CreateShortUrlResult;
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.entity.ShortUrl;
 import io.github.jvitoroliv3ira.fancyurlshortener.shortening.domain.repository.ShortUrlRepository;
@@ -105,6 +107,22 @@ public class CreateShortUrlHandlerTest {
   }
 
   @Test
+  void shouldPublishShortUrlCreatedEvent() {
+    CreateShortUrlCommand payload = commandWithoutExpiration();
+
+    mockGeneratedCodes("abc123");
+    when(shortUrlRepository.saveIfAbsent(any(ShortUrl.class))).thenReturn(true);
+
+    handler.handle(payload);
+
+    ShortUrlCreatedEvent event = capturedPublishedEvent();
+    assertThat(event.shortCode()).isEqualTo("abc123");
+    assertThat(event.originalUrl()).isEqualTo(ORIGINAL_URL);
+    assertThat(event.createdAt()).isEqualTo(NOW);
+    assertThat(event.expiresAt()).isEqualTo(NOW.plus(DEFAULT_EXPIRATION));
+  }
+
+  @Test
   void shouldRetryWhenGeneratedCodeAlreadyExists() {
     CreateShortUrlCommand payload = commandWithoutExpiration();
 
@@ -130,6 +148,7 @@ public class CreateShortUrlHandlerTest {
     assertThat(exception.getMessage()).isEqualTo("Could not generate a unique short URL");
     verify(shortCodeGenerator, times(5)).generate();
     verify(shortUrlRepository, times(5)).saveIfAbsent(any(ShortUrl.class));
+    verify(eventPublisher, never()).publish(any());
   }
 
   @Test
@@ -152,6 +171,12 @@ public class CreateShortUrlHandlerTest {
   private ShortUrl capturedSavedShortUrl() {
     ArgumentCaptor<ShortUrl> captor = ArgumentCaptor.forClass(ShortUrl.class);
     verify(shortUrlRepository).saveIfAbsent(captor.capture());
+    return captor.getValue();
+  }
+
+  private ShortUrlCreatedEvent capturedPublishedEvent() {
+    ArgumentCaptor<ShortUrlCreatedEvent> captor = ArgumentCaptor.forClass(ShortUrlCreatedEvent.class);
+    verify(eventPublisher).publish(captor.capture());
     return captor.getValue();
   }
 
