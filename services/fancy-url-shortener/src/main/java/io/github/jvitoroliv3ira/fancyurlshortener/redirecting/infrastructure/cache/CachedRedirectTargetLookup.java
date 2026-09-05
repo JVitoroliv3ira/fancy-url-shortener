@@ -57,7 +57,6 @@ public class CachedRedirectTargetLookup implements RedirectTargetLookup {
     try {
       return Optional.of(objectMapper.writeValueAsString(redirectTarget));
     } catch (JsonProcessingException ex) {
-      ex.printStackTrace();
       return Optional.empty();
     }
   }
@@ -66,7 +65,6 @@ public class CachedRedirectTargetLookup implements RedirectTargetLookup {
     try {
       return Optional.of(objectMapper.readValue(value, RedirectTarget.class));
     } catch (JsonProcessingException ex) {
-      ex.printStackTrace();
       return Optional.empty();
     }
   }
