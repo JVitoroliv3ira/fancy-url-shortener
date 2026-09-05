@@ -1,23 +1,50 @@
-SERVICE_DIR := services/fancy-url-shortener
+URL_SHORTENER_SERVICE_DIR := services/fancy-url-shortener
+ANALYTICS_SERVICE_DIR := services/fancy-url-shortener-analytics
 PROJECT_JAVA_HOME ?= $(HOME)/.jdks/temurin-21
 JAVA_ENV := JAVA_HOME="$(PROJECT_JAVA_HOME)" PATH="$(PROJECT_JAVA_HOME)/bin:$(PATH)"
-MVNW := $(SERVICE_DIR)/mvnw -f $(SERVICE_DIR)/pom.xml
+URL_SHORTENER_MVNW := $(URL_SHORTENER_SERVICE_DIR)/mvnw -f $(URL_SHORTENER_SERVICE_DIR)/pom.xml
+ANALYTICS_MVNW := $(ANALYTICS_SERVICE_DIR)/mvnw -f $(ANALYTICS_SERVICE_DIR)/pom.xml
 
 .PHONY: test
 test:
-	$(JAVA_ENV) $(MVNW) test
+	$(JAVA_ENV) $(URL_SHORTENER_MVNW) test
 
 .PHONY: boot
 boot:
-	$(JAVA_ENV) $(MVNW) spring-boot:run
+	$(JAVA_ENV) $(URL_SHORTENER_MVNW) spring-boot:run
 
 .PHONY: build
 build:
-	$(JAVA_ENV) $(MVNW) clean package
+	$(JAVA_ENV) $(URL_SHORTENER_MVNW) clean package
 
 .PHONY: clean
 clean:
-	$(JAVA_ENV) $(MVNW) clean
+	$(JAVA_ENV) $(URL_SHORTENER_MVNW) clean
+
+.PHONY: analytics-test
+analytics-test:
+	$(JAVA_ENV) $(ANALYTICS_MVNW) test
+
+.PHONY: analytics-boot
+analytics-boot:
+	$(JAVA_ENV) $(ANALYTICS_MVNW) spring-boot:run
+
+.PHONY: analytics-build
+analytics-build:
+	$(JAVA_ENV) $(ANALYTICS_MVNW) clean package
+
+.PHONY: analytics-clean
+analytics-clean:
+	$(JAVA_ENV) $(ANALYTICS_MVNW) clean
+
+.PHONY: test-all
+test-all: test analytics-test
+
+.PHONY: build-all
+build-all: build analytics-build
+
+.PHONY: clean-all
+clean-all: clean analytics-clean
 
 .PHONY: cassandra-up
 cassandra-up:
