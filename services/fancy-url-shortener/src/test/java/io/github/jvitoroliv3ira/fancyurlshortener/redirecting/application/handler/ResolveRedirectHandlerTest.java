@@ -20,6 +20,7 @@ import io.github.jvitoroliv3ira.fancyurlshortener.redirecting.application.except
 import io.github.jvitoroliv3ira.fancyurlshortener.redirecting.application.result.ResolveRedirectResult;
 import io.github.jvitoroliv3ira.fancyurlshortener.redirecting.domain.repository.RedirectTargetLookup;
 import io.github.jvitoroliv3ira.fancyurlshortener.redirecting.domain.valueobject.RedirectTarget;
+import io.github.jvitoroliv3ira.fancyurlshortener.shared.application.event.EventPublisher;
 import io.github.jvitoroliv3ira.fancyurlshortener.shared.domain.valueobject.ShortCode;
 
 public class ResolveRedirectHandlerTest {
@@ -29,12 +30,14 @@ public class ResolveRedirectHandlerTest {
   private static final String TARGET_URL = "https://example.com.br";
 
   private RedirectTargetLookup redirectTargetLookup;
+  private EventPublisher eventPublisher;
   private ResolveRedirectHandler handler;
 
   @BeforeEach
   void setUp() {
     redirectTargetLookup = mock(RedirectTargetLookup.class);
-    handler = new ResolveRedirectHandler(redirectTargetLookup, CLOCK);
+    eventPublisher = mock(EventPublisher.class);
+    handler = new ResolveRedirectHandler(redirectTargetLookup, eventPublisher, CLOCK);
   }
 
   @Test
