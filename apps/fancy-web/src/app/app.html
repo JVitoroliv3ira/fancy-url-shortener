@@ -1,0 +1,57 @@
+<main class="page-shell">
+  <section class="intro" aria-labelledby="page-title">
+    <p class="eyebrow">fancy</p>
+    <h1 id="page-title">Encurte links de forma simples.</h1>
+    <p class="subtitle">Cole uma URL longa, gere um link curto e compartilhe em segundos.</p>
+  </section>
+
+  <section class="card" aria-label="Criar link curto">
+    <form (ngSubmit)="submit()" novalidate>
+      <label for="url">URL longa</label>
+      <input
+        id="url"
+        name="url"
+        type="url"
+        placeholder="https://example.com/pagina-com-url-longa"
+        [(ngModel)]="url"
+        [disabled]="loading"
+      />
+
+      <label for="expiresAt">Expira em <span>(opcional)</span></label>
+      <input
+        id="expiresAt"
+        name="expiresAt"
+        type="datetime-local"
+        [(ngModel)]="expiresAt"
+        [disabled]="loading"
+      />
+
+      <button type="submit" [disabled]="loading">
+        {{ loading ? 'Criando...' : 'Criar link curto' }}
+      </button>
+    </form>
+
+    <p class="alert error" *ngIf="errorMessage">{{ errorMessage }}</p>
+  </section>
+
+  <section class="result-card" *ngIf="result" aria-label="Link curto criado">
+    <p class="section-label">Seu link curto</p>
+    <div class="short-url-row">
+      <a [href]="result.shortUrl" target="_blank" rel="noreferrer">{{ result.shortUrl }}</a>
+      <button type="button" class="secondary-button" (click)="copyShortUrl()">
+        {{ copied ? 'Copiado' : 'Copiar' }}
+      </button>
+    </div>
+
+    <dl>
+      <div>
+        <dt>Destino</dt>
+        <dd>{{ result.originalUrl }}</dd>
+      </div>
+      <div>
+        <dt>Expiração</dt>
+        <dd>{{ formatExpiration(result.expiresAt) }}</dd>
+      </div>
+    </dl>
+  </section>
+</main>
