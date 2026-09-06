@@ -1,7 +1,10 @@
 URL_SHORTENER_SERVICE_DIR := services/fancy-url-shortener
 ANALYTICS_SERVICE_DIR := services/fancy-url-shortener-analytics
+WEB_APP_DIR := apps/fancy-web
 PROJECT_JAVA_HOME ?= $(HOME)/.jdks/temurin-21
+WEB_NODE_BIN ?= $(HOME)/.nvm/versions/node/v22.23.2/bin
 JAVA_ENV := JAVA_HOME="$(PROJECT_JAVA_HOME)" PATH="$(PROJECT_JAVA_HOME)/bin:$(PATH)"
+WEB_NODE_ENV := PATH="$(WEB_NODE_BIN):$(PATH)"
 URL_SHORTENER_MVNW := $(URL_SHORTENER_SERVICE_DIR)/mvnw -f $(URL_SHORTENER_SERVICE_DIR)/pom.xml
 ANALYTICS_MVNW := $(ANALYTICS_SERVICE_DIR)/mvnw -f $(ANALYTICS_SERVICE_DIR)/pom.xml
 
@@ -36,6 +39,18 @@ analytics-build:
 .PHONY: analytics-clean
 analytics-clean:
 	$(JAVA_ENV) $(ANALYTICS_MVNW) clean
+
+.PHONY: web-boot
+web-boot:
+	$(WEB_NODE_ENV) npm start --prefix $(WEB_APP_DIR)
+
+.PHONY: web-build
+web-build:
+	$(WEB_NODE_ENV) npm run build --prefix $(WEB_APP_DIR)
+
+.PHONY: web-test
+web-test:
+	$(WEB_NODE_ENV) npm test --prefix $(WEB_APP_DIR) -- --watch=false
 
 .PHONY: test-all
 test-all: test analytics-test
